@@ -3,15 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E0EDD7982489AB53002FF6D7 /* SpeedySloth WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = E0EDD7972489AB53002FF6D7 /* SpeedySloth WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E06161942662D47A00227985 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E06161932662D47A00227985 /* SwiftyJSON */; };
+		E0EDD7982489AB53002FF6D7 /* Osti WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = E0EDD7972489AB53002FF6D7 /* Osti WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E0EDD79D2489AB54002FF6D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0EDD79C2489AB54002FF6D7 /* Assets.xcassets */; };
-		E0EDD7A42489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E0EDD7A32489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E0EDD7A42489AB54002FF6D7 /* Osti WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E0EDD7A32489AB54002FF6D7 /* Osti WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E0EDD7A92489AB54002FF6D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EDD7A82489AB54002FF6D7 /* ContentView.swift */; };
-		E0EDD7AB2489AB54002FF6D7 /* SpeedySlothApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EDD7AA2489AB54002FF6D7 /* SpeedySlothApp.swift */; };
+		E0EDD7AB2489AB54002FF6D7 /* OstiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EDD7AA2489AB54002FF6D7 /* OstiApp.swift */; };
 		E0EDD7AD2489AB55002FF6D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0EDD7AC2489AB55002FF6D7 /* Assets.xcassets */; };
 		E0EDD7B02489AB55002FF6D7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0EDD7AF2489AB55002FF6D7 /* Preview Assets.xcassets */; };
 		E0EDD7C22489ACAF002FF6D7 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0EDD7C12489ACAF002FF6D7 /* HealthKit.framework */; };
@@ -48,7 +49,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				E0EDD7A42489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex in Embed App Extensions */,
+				E0EDD7A42489AB54002FF6D7 /* Osti WatchKit Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,7 +60,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				E0EDD7982489AB53002FF6D7 /* SpeedySloth WatchKit App.app in Embed Watch Content */,
+				E0EDD7982489AB53002FF6D7 /* Osti WatchKit App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,17 +70,17 @@
 /* Begin PBXFileReference section */
 		6753D2E9594A89A77A791DC7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8683155AF4E02EA75A5520DB /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		E0EDD7932489AB52002FF6D7 /* SpeedySloth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedySloth.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0EDD7972489AB53002FF6D7 /* SpeedySloth WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SpeedySloth WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0EDD7932489AB52002FF6D7 /* Osti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Osti.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0EDD7972489AB53002FF6D7 /* Osti WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Osti WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0EDD79C2489AB54002FF6D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0EDD79E2489AB54002FF6D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E0EDD7A32489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SpeedySloth WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0EDD7A32489AB54002FF6D7 /* Osti WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Osti WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0EDD7A82489AB54002FF6D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E0EDD7AA2489AB54002FF6D7 /* SpeedySlothApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedySlothApp.swift; sourceTree = "<group>"; };
+		E0EDD7AA2489AB54002FF6D7 /* OstiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OstiApp.swift; sourceTree = "<group>"; };
 		E0EDD7AC2489AB55002FF6D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0EDD7AF2489AB55002FF6D7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E0EDD7B12489AB55002FF6D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E0EDD7BF2489ACAF002FF6D7 /* SpeedySloth WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SpeedySloth WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		E0EDD7BF2489ACAF002FF6D7 /* Osti WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Osti WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		E0EDD7C12489ACAF002FF6D7 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		E0EDD7C42489AE71002FF6D7 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		E0EDD7C62489AEAB002FF6D7 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -96,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E06161942662D47A00227985 /* SwiftyJSON in Frameworks */,
 				E0EDD7C22489ACAF002FF6D7 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,8 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				6753D2E9594A89A77A791DC7 /* README.md */,
-				E0EDD79B2489AB53002FF6D7 /* SpeedySloth WatchKit App */,
-				E0EDD7A72489AB54002FF6D7 /* SpeedySloth WatchKit Extension */,
+				E0EDD79B2489AB53002FF6D7 /* Osti WatchKit App */,
+				E0EDD7A72489AB54002FF6D7 /* Osti WatchKit Extension */,
 				E0EDD7942489AB52002FF6D7 /* Products */,
 				E0EDD7C02489ACAF002FF6D7 /* Frameworks */,
 				A73287B59243E9C9F9600CBD /* Configuration */,
@@ -135,26 +137,26 @@
 		E0EDD7942489AB52002FF6D7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E0EDD7932489AB52002FF6D7 /* SpeedySloth.app */,
-				E0EDD7972489AB53002FF6D7 /* SpeedySloth WatchKit App.app */,
-				E0EDD7A32489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex */,
+				E0EDD7932489AB52002FF6D7 /* Osti.app */,
+				E0EDD7972489AB53002FF6D7 /* Osti WatchKit App.app */,
+				E0EDD7A32489AB54002FF6D7 /* Osti WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E0EDD79B2489AB53002FF6D7 /* SpeedySloth WatchKit App */ = {
+		E0EDD79B2489AB53002FF6D7 /* Osti WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
 				E0EDD79C2489AB54002FF6D7 /* Assets.xcassets */,
 				E0EDD79E2489AB54002FF6D7 /* Info.plist */,
 			);
-			path = "SpeedySloth WatchKit App";
+			path = "Osti WatchKit App";
 			sourceTree = "<group>";
 		};
-		E0EDD7A72489AB54002FF6D7 /* SpeedySloth WatchKit Extension */ = {
+		E0EDD7A72489AB54002FF6D7 /* Osti WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				E0EDD7AA2489AB54002FF6D7 /* SpeedySlothApp.swift */,
+				E0EDD7AA2489AB54002FF6D7 /* OstiApp.swift */,
 				E0EDD7A82489AB54002FF6D7 /* ContentView.swift */,
 				E0EDD7D02489B113002FF6D7 /* StartView.swift */,
 				E0EDD7CE2489B0C4002FF6D7 /* PagingView.swift */,
@@ -166,7 +168,7 @@
 				E0EDD7AE2489AB55002FF6D7 /* Preview Content */,
 				E0EDD7C32489AE1C002FF6D7 /* Supporting Files */,
 			);
-			path = "SpeedySloth WatchKit Extension";
+			path = "Osti WatchKit Extension";
 			sourceTree = "<group>";
 		};
 		E0EDD7AE2489AB55002FF6D7 /* Preview Content */ = {
@@ -188,7 +190,7 @@
 		E0EDD7C32489AE1C002FF6D7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E0EDD7BF2489ACAF002FF6D7 /* SpeedySloth WatchKit Extension.entitlements */,
+				E0EDD7BF2489ACAF002FF6D7 /* Osti WatchKit Extension.entitlements */,
 				E0EDD7AC2489AB55002FF6D7 /* Assets.xcassets */,
 				E0EDD7B12489AB55002FF6D7 /* Info.plist */,
 			);
@@ -198,9 +200,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E0EDD7922489AB52002FF6D7 /* SpeedySloth */ = {
+		E0EDD7922489AB52002FF6D7 /* Osti */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E0EDD7BC2489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth" */;
+			buildConfigurationList = E0EDD7BC2489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti" */;
 			buildPhases = (
 				E0EDD7912489AB52002FF6D7 /* Resources */,
 				E0EDD7BB2489AB55002FF6D7 /* Embed Watch Content */,
@@ -210,14 +212,14 @@
 			dependencies = (
 				E0EDD79A2489AB53002FF6D7 /* PBXTargetDependency */,
 			);
-			name = SpeedySloth;
+			name = Osti;
 			productName = SpeedySloth;
-			productReference = E0EDD7932489AB52002FF6D7 /* SpeedySloth.app */;
+			productReference = E0EDD7932489AB52002FF6D7 /* Osti.app */;
 			productType = "com.apple.product-type.application.watchapp2-container";
 		};
-		E0EDD7962489AB53002FF6D7 /* SpeedySloth WatchKit App */ = {
+		E0EDD7962489AB53002FF6D7 /* Osti WatchKit App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E0EDD7B82489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth WatchKit App" */;
+			buildConfigurationList = E0EDD7B82489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti WatchKit App" */;
 			buildPhases = (
 				E0EDD7952489AB53002FF6D7 /* Resources */,
 				E0EDD7B72489AB55002FF6D7 /* Embed App Extensions */,
@@ -227,14 +229,16 @@
 			dependencies = (
 				E0EDD7A62489AB54002FF6D7 /* PBXTargetDependency */,
 			);
-			name = "SpeedySloth WatchKit App";
+			name = "Osti WatchKit App";
+			packageProductDependencies = (
+			);
 			productName = "SpeedySloth WatchKit App";
-			productReference = E0EDD7972489AB53002FF6D7 /* SpeedySloth WatchKit App.app */;
+			productReference = E0EDD7972489AB53002FF6D7 /* Osti WatchKit App.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
-		E0EDD7A22489AB54002FF6D7 /* SpeedySloth WatchKit Extension */ = {
+		E0EDD7A22489AB54002FF6D7 /* Osti WatchKit Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E0EDD7B42489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth WatchKit Extension" */;
+			buildConfigurationList = E0EDD7B42489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti WatchKit Extension" */;
 			buildPhases = (
 				E0EDD79F2489AB54002FF6D7 /* Sources */,
 				E0EDD7A02489AB54002FF6D7 /* Frameworks */,
@@ -244,9 +248,12 @@
 			);
 			dependencies = (
 			);
-			name = "SpeedySloth WatchKit Extension";
+			name = "Osti WatchKit Extension";
+			packageProductDependencies = (
+				E06161932662D47A00227985 /* SwiftyJSON */,
+			);
 			productName = "SpeedySloth WatchKit Extension";
-			productReference = E0EDD7A32489AB54002FF6D7 /* SpeedySloth WatchKit Extension.appex */;
+			productReference = E0EDD7A32489AB54002FF6D7 /* Osti WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
@@ -270,7 +277,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E0EDD7902489AB52002FF6D7 /* Build configuration list for PBXProject "SpeedySloth" */;
+			buildConfigurationList = E0EDD7902489AB52002FF6D7 /* Build configuration list for PBXProject "Osti" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -279,13 +286,16 @@
 				Base,
 			);
 			mainGroup = E0EDD78C2489AB52002FF6D7;
+			packageReferences = (
+				E06161922662D47A00227985 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = E0EDD7942489AB52002FF6D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E0EDD7922489AB52002FF6D7 /* SpeedySloth */,
-				E0EDD7962489AB53002FF6D7 /* SpeedySloth WatchKit App */,
-				E0EDD7A22489AB54002FF6D7 /* SpeedySloth WatchKit Extension */,
+				E0EDD7922489AB52002FF6D7 /* Osti */,
+				E0EDD7962489AB53002FF6D7 /* Osti WatchKit App */,
+				E0EDD7A22489AB54002FF6D7 /* Osti WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -328,7 +338,7 @@
 				E0EDD7CB2489B02A002FF6D7 /* MenuView.swift in Sources */,
 				E0EDD7C92489AFF4002FF6D7 /* RunButton.swift in Sources */,
 				E0EDD7CF2489B0C4002FF6D7 /* PagingView.swift in Sources */,
-				E0EDD7AB2489AB54002FF6D7 /* SpeedySlothApp.swift in Sources */,
+				E0EDD7AB2489AB54002FF6D7 /* OstiApp.swift in Sources */,
 				E0EDD7A92489AB54002FF6D7 /* ContentView.swift in Sources */,
 				E0EDD7C52489AE71002FF6D7 /* WorkoutManager.swift in Sources */,
 			);
@@ -339,12 +349,12 @@
 /* Begin PBXTargetDependency section */
 		E0EDD79A2489AB53002FF6D7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E0EDD7962489AB53002FF6D7 /* SpeedySloth WatchKit App */;
+			target = E0EDD7962489AB53002FF6D7 /* Osti WatchKit App */;
 			targetProxy = E0EDD7992489AB53002FF6D7 /* PBXContainerItemProxy */;
 		};
 		E0EDD7A62489AB54002FF6D7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E0EDD7A22489AB54002FF6D7 /* SpeedySloth WatchKit Extension */;
+			target = E0EDD7A22489AB54002FF6D7 /* Osti WatchKit Extension */;
 			targetProxy = E0EDD7A52489AB54002FF6D7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -471,12 +481,12 @@
 			baseConfigurationReference = E4DF41FDC704732F285B9EAA /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "SpeedySloth WatchKit Extension/Supporting Files/SpeedySloth WatchKit Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Osti WatchKit Extension/Supporting Files/Osti WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"SpeedySloth WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Osti WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = Q995L82K7R;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "SpeedySloth WatchKit Extension/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Osti WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,12 +508,12 @@
 			baseConfigurationReference = E4DF41FDC704732F285B9EAA /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "SpeedySloth WatchKit Extension/Supporting Files/SpeedySloth WatchKit Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Osti WatchKit Extension/Supporting Files/Osti WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"SpeedySloth WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Osti WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = Q995L82K7R;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "SpeedySloth WatchKit Extension/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Osti WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -529,8 +539,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q995L82K7R;
-				IBSC_MODULE = SpeedySloth_WatchKit_Extension;
-				INFOPLIST_FILE = "SpeedySloth WatchKit App/Info.plist";
+				IBSC_MODULE = Osti_WatchKit_Extension;
+				INFOPLIST_FILE = "Osti WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackmorrison.Osti.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -551,8 +561,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q995L82K7R;
-				IBSC_MODULE = SpeedySloth_WatchKit_Extension;
-				INFOPLIST_FILE = "SpeedySloth WatchKit App/Info.plist";
+				IBSC_MODULE = Osti_WatchKit_Extension;
+				INFOPLIST_FILE = "Osti WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackmorrison.Osti.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -599,7 +609,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E0EDD7902489AB52002FF6D7 /* Build configuration list for PBXProject "SpeedySloth" */ = {
+		E0EDD7902489AB52002FF6D7 /* Build configuration list for PBXProject "Osti" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E0EDD7B22489AB55002FF6D7 /* Debug */,
@@ -608,7 +618,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E0EDD7B42489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth WatchKit Extension" */ = {
+		E0EDD7B42489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E0EDD7B52489AB55002FF6D7 /* Debug */,
@@ -617,7 +627,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E0EDD7B82489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth WatchKit App" */ = {
+		E0EDD7B82489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti WatchKit App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E0EDD7B92489AB55002FF6D7 /* Debug */,
@@ -626,7 +636,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E0EDD7BC2489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "SpeedySloth" */ = {
+		E0EDD7BC2489AB55002FF6D7 /* Build configuration list for PBXNativeTarget "Osti" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E0EDD7BD2489AB55002FF6D7 /* Debug */,
@@ -636,6 +646,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E06161922662D47A00227985 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E06161932662D47A00227985 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E06161922662D47A00227985 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E0EDD78D2489AB52002FF6D7 /* Project object */;
 }

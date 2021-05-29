@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SpeedySloth WatchKit Extension</string>
+	<string>Osti WatchKit Extension</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,9 +31,9 @@
 		<string>com.apple.watchkit</string>
 	</dict>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Your workout related data will be used to display your saved workouts in SpeedySloth.</string>
+	<string>Your workout related data will be used to display your saved workouts in Osti.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Workouts tracked by SpeedySloth on Apple Watch will be saved to HealthKit.</string>
+	<string>Workouts tracked by Osti on Apple Watch will be saved to HealthKit.</string>
 	<key>UIBackgroundModes</key>
 	<array/>
 	<key>WKBackgroundModes</key>

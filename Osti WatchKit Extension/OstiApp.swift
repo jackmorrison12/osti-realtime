@@ -2,13 +2,13 @@
 See LICENSE folder for this sample’s licensing information.
 
 Abstract:
-This file defines the SpeedySloth app.
+This file defines the Osti app.
 */
 
 import SwiftUI
 
 @main
-struct SpeedySlothApp: App {
+struct OstiApp: App {
     // This is the business logic.
     var workoutManager = WorkoutManager()
 

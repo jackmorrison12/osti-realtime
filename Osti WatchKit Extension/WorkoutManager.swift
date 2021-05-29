@@ -8,6 +8,7 @@ This file contains the business logic, which is the interface to HealthKit.
 import Foundation
 import HealthKit
 import Combine
+import SwiftyJSON
 
 
 class WorkoutManager: NSObject, ObservableObject {
@@ -91,6 +92,29 @@ class WorkoutManager: NSObject, ObservableObject {
     func startWorkout() {
         
         // Get the playlist from the database
+        guard let url =  URL(string:"https://osti-recommender.herokuapp.com/generate_playlist")
+        else{
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : "606c78c40326f734f14f326b", "wid": "6091a14a27f7f3b3a9e65134"])
+
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+//            print(response as Any)
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                return
+            }
+            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+            
+        }.resume()
         
         
         // Start the timer.
