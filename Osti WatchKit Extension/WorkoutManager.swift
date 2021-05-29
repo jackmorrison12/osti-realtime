@@ -92,7 +92,7 @@ class WorkoutManager: NSObject, ObservableObject {
     func startWorkout() {
         
         // Get the playlist from the database
-        guard let url =  URL(string:"https://osti-recommender.herokuapp.com/generate_playlist")
+        guard let url =  URL(string:"https://osti-recommender.herokuapp.com/get_initial_data")
         else{
             return
         }
@@ -112,7 +112,10 @@ class WorkoutManager: NSObject, ObservableObject {
             guard let data = data else{
                 return
             }
-            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+            let json = JSON(data)
+//            debugPrint(json)
+            print(json["playlist"])
+//            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
             
         }.resume()
         
