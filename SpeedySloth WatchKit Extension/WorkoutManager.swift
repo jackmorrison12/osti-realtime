@@ -9,6 +9,7 @@ import Foundation
 import HealthKit
 import Combine
 
+
 class WorkoutManager: NSObject, ObservableObject {
     
     /// - Tag: DeclareSessionBuilder
@@ -88,6 +89,10 @@ class WorkoutManager: NSObject, ObservableObject {
     
     // Start the workout.
     func startWorkout() {
+        
+        // Get the playlist from the database
+        
+        
         // Start the timer.
         setUpTimer()
         self.running = true
