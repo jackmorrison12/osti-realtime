@@ -39,6 +39,10 @@ class WorkoutManager: NSObject, ObservableObject {
     var cancellable: Cancellable?
     var accumulatedTime: Int = 0
     
+    /// - Tag: Osti Data
+    var uid = "606c78c40326f734f14f326b"
+    var wid = "6091a14a27f7f3b3a9e65134"
+    
     // Set up and start the timer.
     func setUpTimer() {
         start = Date()
@@ -91,34 +95,15 @@ class WorkoutManager: NSObject, ObservableObject {
     // Start the workout.
     func startWorkout() {
         
-        // Get the playlist from the database
-        guard let url =  URL(string:"https://osti-recommender.herokuapp.com/get_initial_data")
-        else{
-            return
+        let result = getInitialData(uid, wid)
+        print(result["playlist"])
+        
+//        If a spotify playlist exists, play that, else queue all the tracks then play
+        if (result["playlist"]["spotify_playlist"].exists()) {
+            playPlaylist(uid, result["playlist"]["spotify_playlist"]["id"].stringValue)
+        } else {
+            playTracks(uid, result["playlist"]["tracks"].arrayValue.map {$0.stringValue})
         }
-        
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : "606c78c40326f734f14f326b", "wid": "6091a14a27f7f3b3a9e65134"])
-
-        URLSession.shared.dataTask(with: request){
-            (data, response, error) in
-//            print(response as Any)
-            if let error = error {
-                print(error)
-                return
-            }
-            guard let data = data else{
-                return
-            }
-            let json = JSON(data)
-//            debugPrint(json)
-            print(json["playlist"])
-//            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
-            
-        }.resume()
-        
         
         // Start the timer.
         setUpTimer()
@@ -194,6 +179,99 @@ class WorkoutManager: NSObject, ObservableObject {
             self.distance = 0
         }
     }
+    
+    func getInitialData(_ uid: String, _ wid: String) -> JSON {
+        // Get the playlist from the database
+        guard let url =  URL(string:"https://osti-recommender.herokuapp.com/get_initial_data")
+        else{
+            return JSON({})
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "wid": wid])
+        let semaphore = DispatchSemaphore(value: 0)
+        var result = JSON({})
+
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                return
+            }
+            result = JSON(data)
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+        return result
+    }
+    
+    func playPlaylist(_ uid: String, _ pid: String) {
+        // Get the playlist from the database
+        guard let url =  URL(string:"https://osti.uk/api/spotifyControl/playPlaylist")
+        else{
+            return         }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "pid": pid])
+        let semaphore = DispatchSemaphore(value: 0)
+        var result = Data()
+
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                return
+            }
+            result = data
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+        print(result)
+        return
+    }
+    
+    func playTracks(_ uid: String, _ tracks: [String]) {
+        print("playing tracks")
+        print(tracks)
+        // Get the playlist from the database
+        guard let url =  URL(string:"https://osti.uk/api/spotifyControl/playTracks")
+        else{
+            return         }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "tids": tracks])
+        let semaphore = DispatchSemaphore(value: 0)
+        var result = Data()
+
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                return
+            }
+            result = data
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+        print(result)
+        return
+    }
+
     
     // MARK: - Update the UI
     // Update the published values.
