@@ -6,6 +6,7 @@ This file defines the Osti app.
 */
 
 import SwiftUI
+import Foundation
 
 @main
 struct OstiApp: App {
@@ -32,6 +33,7 @@ struct OstiApp: App {
             }
             print(data)
         }.resume()
+
     }
 
     // Return the scene.

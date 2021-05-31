@@ -42,7 +42,15 @@ class WorkoutManager: NSObject, ObservableObject {
     /// - Tag: Osti Data
     var uid = "606c78c40326f734f14f326b"
     var wid = "6091a14a27f7f3b3a9e65134"
-    
+    var timer: Timer?
+    var result: JSON = []
+    var songDeltaMap: JSON = []
+    var trackInfoMap: JSON = []
+    var recs: [JSON] = []
+    var playedSongs: Set<String> = []
+    var wrongCount = 0
+    var lastPlaying: String = ""
+
     // Set up and start the timer.
     func setUpTimer() {
         start = Date()
@@ -95,7 +103,7 @@ class WorkoutManager: NSObject, ObservableObject {
     // Start the workout.
     func startWorkout() {
         
-        let result = getInitialData(uid, wid)
+        result = getInitialData(uid, wid)
         print(result["playlist"])
         
 //        If a spotify playlist exists, play that, else queue all the tracks then play
@@ -134,6 +142,8 @@ class WorkoutManager: NSObject, ObservableObject {
         builder.beginCollection(withStart: Date()) { (success, error) in
             // The workout has started.
         }
+        
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkStats), userInfo: nil, repeats: true)
     }
     
     // MARK: - State Control
@@ -168,6 +178,8 @@ class WorkoutManager: NSObject, ObservableObject {
         // End the workout session.
         session.end()
         cancellable?.cancel()
+        timer?.invalidate()
+        timer = nil
     }
     
     func resetWorkout() {
@@ -192,8 +204,6 @@ class WorkoutManager: NSObject, ObservableObject {
         request.httpMethod = "POST"
         request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "wid": wid])
         let semaphore = DispatchSemaphore(value: 0)
-        var result = JSON({})
-
         URLSession.shared.dataTask(with: request){
             (data, response, error) in
             if let error = error {
@@ -203,10 +213,15 @@ class WorkoutManager: NSObject, ObservableObject {
             guard let data = data else{
                 return
             }
-            result = JSON(data)
+            self.result = JSON(data)
             semaphore.signal()
         }.resume()
         semaphore.wait()
+        
+        // Use the deltas to make a delta map
+        songDeltaMap = result["deltas"]
+        trackInfoMap = result["track_data"]
+        recs = result["recs"].arrayValue
         return result
     }
     
@@ -221,7 +236,6 @@ class WorkoutManager: NSObject, ObservableObject {
         request.httpMethod = "POST"
         request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "pid": pid])
         let semaphore = DispatchSemaphore(value: 0)
-        var result = Data()
 
         URLSession.shared.dataTask(with: request){
             (data, response, error) in
@@ -230,13 +244,12 @@ class WorkoutManager: NSObject, ObservableObject {
                 return
             }
             guard let data = data else{
+                print(data)
                 return
             }
-            result = data
             semaphore.signal()
         }.resume()
         semaphore.wait()
-        print(result)
         return
     }
     
@@ -246,14 +259,44 @@ class WorkoutManager: NSObject, ObservableObject {
         // Get the playlist from the database
         guard let url =  URL(string:"https://osti.uk/api/spotifyControl/playTracks")
         else{
-            return         }
+            return
+        }
         
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid, "tids": tracks])
         let semaphore = DispatchSemaphore(value: 0)
-        var result = Data()
+
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                print(data)
+                return
+            }
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+        return
+    }
+    
+    func getCurrentlyPlayingTrack(_ uid: String) -> String {
+        // Get the playlist from the database
+        guard let url =  URL(string:"https://osti.uk/api/spotifyControl/currentlyPlaying")
+        else{
+            return ""
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody =  try? JSONSerialization.data(withJSONObject: ["uid" : uid])
+        let semaphore = DispatchSemaphore(value: 0)
+        var res = JSON({})
 
         URLSession.shared.dataTask(with: request){
             (data, response, error) in
@@ -264,12 +307,248 @@ class WorkoutManager: NSObject, ObservableObject {
             guard let data = data else{
                 return
             }
-            result = data
+            res = JSON(data)
             semaphore.signal()
         }.resume()
         semaphore.wait()
-        print(result)
-        return
+        
+        // Use the deltas to make a delta map
+        if (res["track_id"] != JSON.null) {
+            return(res["track_id"].stringValue)
+        }
+        
+        return ""
+    }
+    
+    @objc func checkStats() {
+        
+        // Get currently playing song. Add to set of songs played
+        let currentlyPlaying = getCurrentlyPlayingTrack(uid)
+        
+        if currentlyPlaying != lastPlaying {
+            if lastPlaying.count > 0 {
+                print("removing from recommendations:")
+                print(lastPlaying)
+                self.recs.removeAll(where: {$0["track_id"].stringValue == lastPlaying})
+            }
+            lastPlaying = currentlyPlaying
+        }
+        
+        if currentlyPlaying.count > 0 {
+            playedSongs.insert(currentlyPlaying)
+        }
+        
+        // Get the current stats - HR/Calories/Distance
+//        print(heartrate)
+//        print(activeCalories)
+//        print(distance)
+//        print(elapsedSeconds)
+        
+        // Get the target values
+        let targetLength = result["stats"]["stats"]["average_length"].doubleValue
+        let targetHeartRate = result["stats"]["stats"]["average_heart_rate"].doubleValue
+        let targetCalories = result["stats"]["stats"]["average_calories"].doubleValue
+        let targetDistance = result["stats"]["stats"]["average_distance"].doubleValue
+        
+        // Calculate the current delta
+        
+        // Heart rate delta - negative how much hr is above where it should be - we want to find a song where hr delta is this
+//        print("hr")
+        let hrDelta = targetHeartRate - heartrate
+//        print(hrDelta)
+        
+        // Calorie delta
+//        print("cals")
+        let targetCalsToNow = (Double(elapsedSeconds) / (targetLength*60)) * targetCalories
+        let calorieDelta = (targetCalories - (activeCalories - targetCalsToNow)) / (targetLength * 6)
+//        print(calorieDelta)
+
+        // Distance delta
+//        print("dist")
+        let targetDistToNow = (Double(elapsedSeconds) / (targetLength*60)) * targetDistance
+        let distDelta = (targetDistance - (distance - targetDistToNow)) / (targetLength * 6)
+//        print(distDelta)
+        
+        // Calculate the best song which should be played to reach that delta
+        // Calculate the 3 metrics:
+        
+        var trackRankings: [Double] = []
+        
+        print("recs:")
+        print(recs.count)
+        
+        for (index, rec) in recs.enumerated() {
+//            print(rec)
+            var score = 0.0
+            
+            // Cosine Distance (two, one, zero weighted 5:2:1)
+            if (songDeltaMap[rec["track_id"].stringValue].exists()) {
+                var targets: [Double] = []
+                var avgs: [Double] = []
+                if (songDeltaMap[rec["track_id"].stringValue]["two"]["heart_rate"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["two"]["heart_rate"].doubleValue)
+                    avgs.append(hrDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["two"]["calories"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["two"]["calories"].doubleValue)
+                    avgs.append(calorieDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["two"]["distance"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["two"]["distance"].doubleValue)
+                    avgs.append(distDelta)
+                }
+                if (targets.count > 1) {
+                    // Calculate cdist, * by 0.5, add to score
+                    score += 0.5 * (1 - cosineSim(A: targets, B:avgs))
+                } else {
+                    score += 0.5
+                }
+                
+                targets = []
+                avgs = []
+                if (songDeltaMap[rec["track_id"].stringValue]["one"]["heart_rate"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["one"]["heart_rate"].doubleValue)
+                    avgs.append(hrDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["one"]["calories"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["one"]["calories"].doubleValue)
+                    avgs.append(calorieDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["one"]["distance"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["one"]["distance"].doubleValue)
+                    avgs.append(distDelta)
+                }
+                if (targets.count > 1) {
+                    // Calculate cdist, * by 0.2, add to score
+                    score += 0.2 * (1 - cosineSim(A: targets, B:avgs))
+                } else {
+                    score += 0.2
+                }
+                
+                targets = []
+                avgs = []
+                if (songDeltaMap[rec["track_id"].stringValue]["zero"]["heart_rate"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["zero"]["heart_rate"].doubleValue)
+                    avgs.append(hrDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["zero"]["calories"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["zero"]["calories"].doubleValue)
+                    avgs.append(calorieDelta)
+                }
+                if (songDeltaMap[rec["track_id"].stringValue]["zero"]["distance"].exists()) {
+                    targets.append(songDeltaMap[rec["track_id"].stringValue]["zero"]["distance"].doubleValue)
+                    avgs.append(distDelta)
+                }
+                if (targets.count > 1) {
+                    // Calculate cdist, * by 0.1, add to score
+                    score += 0.1 * (1 - cosineSim(A: targets, B:avgs))
+                } else {
+                    score += 0.1
+                }
+            } else {
+                score += 0.8
+            }
+            
+            // BPM/HR Difference
+            
+            let tempo = trackInfoMap[rec["track_id"].stringValue]["features"]["tempo"].doubleValue
+            score += (0.3 * abs((tempo - targetHeartRate) / targetHeartRate))
+            
+            // Rec list position
+            
+            score += (Double(index) / 100000.0)
+            
+            trackRankings.append(score)
+        }
+                
+        let sortedTracks = argsort(a: trackRankings)
+        
+        var topRecs:[String] = []
+        for i in 0...4 {
+            topRecs.append(recs[sortedTracks[i]]["track_id"].stringValue)
+            print(trackInfoMap[recs[sortedTracks[i]]["track_id"].stringValue]["name"].stringValue)
+            print(trackRankings[sortedTracks[i]])
+        }
+        
+        
+        if currentlyPlaying.count > 0 {
+            print(wrongCount)
+            // if in top 10, do nothing, set wrongCount = 0
+            if topRecs.contains(currentlyPlaying) {
+                wrongCount = 0
+            } else {
+                // else - wrongCount += 1
+
+                wrongCount += 1
+                if wrongCount > 3 {
+                    // If wrongCount >= 3, then recalculate the best songs for the remaining playlist time, then store this
+                    // and play them all using playTracks
+                    print("Song playing isn't optimal... overriding")
+                    topRecs = []
+                    var currentLength = 0.0
+                    var i = 0
+                    while(currentLength < ((targetLength*60) - Double(elapsedSeconds)) && i < recs.count) {
+                        topRecs.append(recs[sortedTracks[i]]["track_id"].stringValue)
+                        currentLength += (trackInfoMap[recs[sortedTracks[i]]["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)
+                        i += 1
+                    }
+                    print(topRecs)
+                    // play these songs
+                    playTracks(uid, topRecs)
+                    wrongCount = 0
+                }
+                
+            }
+   
+        } else {
+            // play the top n songs to fill up the rest of workout
+            print("No songs playing... lets change that")
+            topRecs = []
+            var currentLength = 0.0
+            var i = 0
+            while(currentLength < ((targetLength*60) - Double(elapsedSeconds)) && i < recs.count) {
+                topRecs.append(recs[sortedTracks[i]]["track_id"].stringValue)
+                currentLength += (trackInfoMap[recs[sortedTracks[i]]["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)
+                i += 1
+            }
+            print(topRecs)
+            // play these songs
+            playTracks(uid, topRecs)
+            wrongCount = 0
+        }
+        
+        
+    }
+    
+    // Mark: - https://gist.github.com/joninsky/4a8773f13fb5ff4513060ef03c8035d7
+    /** Cosine similarity **/
+    private func cosineSim(A: [Double], B: [Double]) -> Double {
+        return dot(A: A, B: B) / (magnitude(A: A) * magnitude(A: B))
+    }
+
+    /** Dot Product **/
+    private func dot(A: [Double], B: [Double]) -> Double {
+        var x: Double = 0
+        for i in 0...A.count-1 {
+            x += A[i] * B[i]
+        }
+        return x
+    }
+
+    /** Vector Magnitude **/
+    private func magnitude(A: [Double]) -> Double {
+        var x: Double = 0
+        for elt in A {
+            x += elt * elt
+        }
+        return sqrt(x)
+    }
+    
+    // Mark: - https://stackoverflow.com/questions/29183149/swift-returning-the-indexes-that-will-sort-an-array-similar-to-numpy-argsort
+    private func argsort<T:Comparable>( a : [T] ) -> [Int] {
+        var r = Array(a.indices)
+        r.sort(by: { a[$0] < a[$1] })
+        return r
     }
 
     
