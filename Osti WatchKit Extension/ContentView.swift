@@ -6,6 +6,7 @@ This file defines the main view of the app, including the animation between the 
 */
 
 import SwiftUI
+import HealthKit
 
 struct ContentView: View {
     // Get the business logic from the environment.
@@ -27,8 +28,8 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.3)))
     }
     
-    func startAction() {
-        workoutSession.startWorkout()
+    func startAction(wid: String, activityType: HKWorkoutActivityType) {
+        workoutSession.startWorkout(wid: wid, activityType: activityType)
         withAnimation {
             workoutInProgress = true
         }

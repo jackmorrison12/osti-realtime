@@ -57,7 +57,7 @@ class WorkoutManager: NSObject, ObservableObject {
     
     /// - Tag: Osti Data
     var uid = "606c78c40326f734f14f326b"
-    var wid = "6091a67f96e683e8598e6792"
+//    var wid = "6091a67f96e683e8598e6792"
     var timer: Timer?
     var result: JSON = []
     var songDeltaMap: JSON = []
@@ -107,7 +107,7 @@ class WorkoutManager: NSObject, ObservableObject {
     }
     
     // Provide the workout configuration.
-    func workoutConfiguration() -> HKWorkoutConfiguration {
+    func workoutConfiguration(activityType: HKWorkoutActivityType) -> HKWorkoutConfiguration {
         /// - Tag: WorkoutConfiguration
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = .running
@@ -117,7 +117,7 @@ class WorkoutManager: NSObject, ObservableObject {
     }
     
     // Start the workout.
-    func startWorkout() {
+    func startWorkout(wid: String, activityType: HKWorkoutActivityType) {
         
         result = getInitialData(uid, wid)
         print(result["playlist"])
@@ -136,7 +136,7 @@ class WorkoutManager: NSObject, ObservableObject {
         // Create the session and obtain the workout builder.
         /// - Tag: CreateWorkout
         do {
-            session = try HKWorkoutSession(healthStore: healthStore, configuration: self.workoutConfiguration())
+            session = try HKWorkoutSession(healthStore: healthStore, configuration: self.workoutConfiguration(activityType: activityType))
             builder = session.associatedWorkoutBuilder()
         } catch {
             // Handle any exceptions.
@@ -150,7 +150,7 @@ class WorkoutManager: NSObject, ObservableObject {
         // Set the workout builder's data source.
         /// - Tag: SetDataSource
         builder.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore,
-                                                     workoutConfiguration: workoutConfiguration())
+                                                     workoutConfiguration: workoutConfiguration(activityType: activityType))
         
         // Start the workout session and begin data collection.
         /// - Tag: StartSession
