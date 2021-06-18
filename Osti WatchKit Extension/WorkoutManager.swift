@@ -57,7 +57,6 @@ class WorkoutManager: NSObject, ObservableObject {
     
     /// - Tag: Osti Data
     var uid = "606c78c40326f734f14f326b"
-//    var wid = "6091a67f96e683e8598e6792"
     var timer: Timer?
     var result: JSON = []
     var songDeltaMap: JSON = []
@@ -354,24 +353,15 @@ class WorkoutManager: NSObject, ObservableObject {
             playedSongs.insert(currentlyPlaying)
         }
         
-        // Get the current stats - HR/Calories/Distance
-//        print(heartrate)
-//        print(activeCalories)
-//        print(distance)
-//        print(elapsedSeconds)
-        
         // Get the target values
         let targetLength = result["stats"]["stats"]["average_length"].doubleValue
         let targetHeartRate = result["stats"]["stats"]["average_heart_rate"].doubleValue
         let targetCalories = result["stats"]["stats"]["average_calories"].doubleValue
         let targetDistance = result["stats"]["stats"]["average_distance"].doubleValue
-//        print(targetDistance)
         
         // Calculate the current delta
         
         // Heart rate delta - negative how much hr is above where it should be - we want to find a song where hr delta is this
-//        print("hr")
-//        print("Deltas:")
         let hrDelta = targetHeartRate - heartrate
         if (hrDelta > 0) {
             print("DELTA: HR TOO LOW " + String(hrDelta))
@@ -380,17 +370,13 @@ class WorkoutManager: NSObject, ObservableObject {
         }
         
         // Calorie delta
-//        print("cals")
         let targetCalsToNow = (Double(elapsedSeconds) / (targetLength*60)) * targetCalories
         let calorieDelta = (targetCalories - (activeCalories - targetCalsToNow)) / (targetLength * 6)
         print("DELTA: CAL DELTA " + String(calorieDelta))
         // Distance delta
-//        print("dist")
         let targetDistToNow = (Double(elapsedSeconds) / (targetLength*60)) * targetDistance
         let distDelta = (targetDistance - (distance - targetDistToNow)) / (targetLength * 6)
         print("DELTA: DIST DELTA " + String(distDelta))
-
-//        print(distDelta)
         
         // Calculate the best song which should be played to reach that delta
         // Calculate the 3 metrics:
@@ -401,32 +387,25 @@ class WorkoutManager: NSObject, ObservableObject {
         print(recs.count)
         
         for (index, rec) in recs.enumerated() {
-//            print(rec)
             var score = 0.0
             
             // Cosine Distance (two, one, zero weighted 5:2:1)
             if (songDeltaMap[rec["track_id"].stringValue].exists()) {
-//                print(songDeltaMap[rec["track_id"].stringValue])
                 var targets: [Double] = []
                 var avgs: [Double] = []
                 if (songDeltaMap[rec["track_id"].stringValue]["two"]["heart_rate"].exists()) {
                     targets.append(songDeltaMap[rec["track_id"].stringValue]["two"]["heart_rate"].doubleValue)
                     avgs.append(hrDelta)
-//                    print("MATCH: HR")
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["two"]["calories"].exists()) {
                     targets.append((songDeltaMap[rec["track_id"].stringValue]["two"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
-//                    print((songDeltaMap[rec["track_id"].stringValue]["two"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
                     avgs.append(calorieDelta)
-//                    print("MATCH: CAL")
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["two"]["distance"].exists() && targetDistance > 0) {
                     targets.append((songDeltaMap[rec["track_id"].stringValue]["two"]["distance"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
                     avgs.append(distDelta)
-//                    print("MATCH: DIST")
                 }
-//                print(targets)
-//                print(avgs)
+
                 if (targets.count > 1) {
                     // Calculate cdist, * by 0.5, add to score
                     score += 0.5 * (1 - cosineSim(A: targets, B:avgs))
@@ -442,7 +421,6 @@ class WorkoutManager: NSObject, ObservableObject {
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["one"]["calories"].exists()) {
                     targets.append((songDeltaMap[rec["track_id"].stringValue]["one"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
-//                    print((songDeltaMap[rec["track_id"].stringValue]["one"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
                     avgs.append(calorieDelta)
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["one"]["distance"].exists()) {
@@ -464,7 +442,6 @@ class WorkoutManager: NSObject, ObservableObject {
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["zero"]["calories"].exists()) {
                     targets.append((songDeltaMap[rec["track_id"].stringValue]["zero"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
-//                    print((songDeltaMap[rec["track_id"].stringValue]["zero"]["calories"].doubleValue / (trackInfoMap[rec["track_id"].stringValue]["features"]["duration"].doubleValue / 1000.0)) * 10.0)
                     avgs.append(calorieDelta)
                 }
                 if (songDeltaMap[rec["track_id"].stringValue]["zero"]["distance"].exists()) {
